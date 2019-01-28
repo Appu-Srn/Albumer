@@ -1,0 +1,31 @@
+{% extends 'music/base.html' %}
+ <title>{% block title %}Album index{% endblock %}</title>
+{% block body %}
+    {% if all_albums %}
+        <ul style="border-color:black;, border-width=30px;">
+            {% for album in all_albums %}
+            <!--Details-->
+            <div class="col-sm-4 col-lg-2">
+                <div class="thumbnail">
+            <li><a href="{% url 'music:detail' album.id %}">
+                <img src="{{ album.album_logo.url }}" class="img-responsive img-thumbnail"></a></li>
+
+            <!--Delete-->
+            <form action="{% url 'music:album_delete' album.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="album_id" valuse="{{ album.id }}"/>
+                <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </form>
+
+            <a class="btn btn-outline-info" href="{% url 'music:album_update' album.id %}">{{ album.album_title }}</a>
+</div>
+</div>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h2>No Albums</h2>
+    {% endif %}
+
+{% endblock %}
